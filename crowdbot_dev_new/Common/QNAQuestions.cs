@@ -10,5 +10,7 @@ namespace CrowdBot.Common
         public const string ASKABOUTCROWDSOURCING = "about crowd source as general";
         public const string ASKABOUTCROWDSOURCINGINJH = "about crowd source in john hancock";
 
+
+        public const string USERHAVENEWIDEA = "contact person for new idea";
     }
 }

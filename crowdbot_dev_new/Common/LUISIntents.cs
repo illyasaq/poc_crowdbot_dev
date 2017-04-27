@@ -2,9 +2,10 @@
 {
     public class LUISIntents
     {
-        public const string USERASKABOUTCROWDSOURCE = "user ask about crowd source";
-        public const string USERASKABOUTDEVELOPER = "user ask about developer";
-        public const string USERHAVENEWIDEA = "user have new idea";
-        
+        public const string CROWD_GREETINGS = "crowdbot.greetings";
+        public const string CROWD_HELP = "crowdbot.help";
+        public const string CROWD_CROWDSOURCE = "crowdbot.crowdsource";
+        public const string CROWD_DEVELOPER = "crowdbot.developer";
+        public const string CROWD_NEWIDEAS = "crowdbot.newidea";       
     }
 }

@@ -5,6 +5,7 @@ using System.Web.Http;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Builder.Dialogs;
 using CrowdBot.Dialogs;
+using System;
 
 namespace CrowdBot
 {
@@ -17,6 +18,8 @@ namespace CrowdBot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
+            ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+            
             if (activity.Type == ActivityTypes.Message)
             {
                 //ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
@@ -30,7 +33,9 @@ namespace CrowdBot
             }
             else
             {
-                HandleSystemMessage(activity);
+                var resp =  HandleSystemMessage(activity);
+                if (resp != null)
+                    await connector.Conversations.ReplyToActivityAsync(resp);
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
@@ -48,6 +53,7 @@ namespace CrowdBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
+                if (message.MembersAdded[0].Name != "Bot") { return message.CreateReply("Welcome User, I am crowdbot. How may I help you?"); }
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {

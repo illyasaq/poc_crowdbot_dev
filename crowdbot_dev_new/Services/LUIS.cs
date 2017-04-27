@@ -46,7 +46,7 @@ namespace CrowdBot.Services
 
             using (var client = new HttpClient())
             {
-                string curi = string.Format(Constants.LUIS_URI, strInput);
+                string curi = string.Format(Constants.LUIS_URI, Constants.LUIS_KNOWLEDGEBASE_ID, Constants.LUIS_SUBSCRIPTION_KEY, strInput);
                 HttpResponseMessage msg = await client.GetAsync(curi);
 
                 if (msg.IsSuccessStatusCode)

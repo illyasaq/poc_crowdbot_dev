@@ -8,7 +8,7 @@ namespace CrowdBot.Dialogs.Childs
 {
 
     [Serializable]
-    public class CrowdSourceDialog : IDialog<object>
+    public class CrowdSourceDialog : IDialog<bool>
     {
         public async Task StartAsync(IDialogContext context)
         {
@@ -19,20 +19,20 @@ namespace CrowdBot.Dialogs.Childs
 
         private async Task WhatIsCrowdsourcing(IDialogContext context, IAwaitable<string> result)
         {
-            //await context.PostAsync("CrowdSourceDialog.AfterSelectOption");
             var res = await result;
             switch (res)
             {
                 case Prompts.NO:
-                    PromptDialog.Choice(context, CrowdSourcingInJH, 
-                        new string[] { Prompts.YES, Prompts.NO }, "do you mean about crowdsourcing at JH?");
+                    PromptDialog.Choice(context, CrowdSourcingInJH,
+                        new string[] { Prompts.YES, Prompts.NO }, "Oh sorry. Do you mean about crowdsourcing at John Hancock?");
                     break;
                 default:
                     // Get Answer from QnAMaker service
                     var answer = QNA.CallQnAService(QNAQuestions.ASKABOUTCROWDSOURCING);
                     await context.PostAsync(answer);
-                    await context.PostAsync(Constants.ASKUSERFORNEXTQUESTION);
-                    context.Done(this); //Finish this dialog
+
+                    PromptDialog.Choice(context, CrowdSourcingInJH,
+                        new string[] { Prompts.YES, Prompts.NO }, "Do you want to know about crowdsourcing in John Hancock?");
                     break;
             }
         }
@@ -43,15 +43,15 @@ namespace CrowdBot.Dialogs.Childs
             switch (res)
             {
                 case Prompts.NO:
-                    await context.PostAsync($"I am sorry. That is the extend of my knowledge for now. {Constants.ASKUSERFORNEXTQUESTION}");
-                    context.Done(this); //Finish this dialog
+                    await context.PostAsync(Constants.IDONOTKNOWABOUTIT);
+                    context.Done(true); //Finish this dialog
                     break;
                 default:
                     // Get Answer from QnAMaker service
                     var answer = QNA.CallQnAService(QNAQuestions.ASKABOUTCROWDSOURCINGINJH);
                     await context.PostAsync(answer);
-                    await context.PostAsync(Constants.ASKUSERFORNEXTQUESTION);
-                    context.Done(this); //Finish this dialog
+                    //await context.PostAsync(Constants.ASKUSERFORNEXTQUESTION);
+                    context.Done(true); //Finish this dialog
                     break;
             }
         }
